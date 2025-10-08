@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notification-listener-config xmlns:android="http://schemas.android.com/apk/res/android"
+    android:settingsActivity="com.example.myapp.ui.SettingsActivity" />
+<?xml version="1.0" encoding="utf-8"?>
+<notification-listener-config xmlns:android="http://schemas.android.com/apk/res/android"
+    android:settingsActivity="com.example.myapp.ui.SettingsActivity" />
