@@ -1,21 +1,8 @@
-// Top-level build file
-buildscript {
-    ext.kotlin_version = '1.9.24'
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.5.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
+// Root build.gradle (Project-level)
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
+plugins {
+    id 'com.android.application' version '8.6.1' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.24' apply false
 }
 
 task clean(type: Delete) {
