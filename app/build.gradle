@@ -1,5 +1,4 @@
-cd /workspaces/Ohhh-hymn
-rm -f app/build.gradle
+mkdir -p app
 cat > app/build.gradle <<'EOF'
 plugins {
     id 'com.android.application'
