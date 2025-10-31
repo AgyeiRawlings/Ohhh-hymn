@@ -9,8 +9,8 @@ class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             val serviceIntent = Intent(context, SocketService::class.java).apply {
-                putExtra("server_ip", "192.168.43.27")
-                putExtra("server_port", 4444)
+                putExtra("server_ip", "192.168.0.179")
+                putExtra("server_port", 54835)
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(serviceIntent)

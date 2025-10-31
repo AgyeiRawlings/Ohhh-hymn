@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">Socket Client</string>
-    <string name="accessibility_service_description">This service allows remote control of your device</string>
+    <string name="app_name">Ohhh Hymn</string>
+
+    <!-- Description for the accessibility service -->
+    <string name="accessibility_service_description">
+        Accessibility service for the Ohhh Hymn app. It helps automate interactions when enabled.
+    </string>
 </resources>

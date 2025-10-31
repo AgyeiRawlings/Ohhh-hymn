@@ -1,0 +1,22 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color purple_500
+color purple_700
+color teal_200
+color white
+dimen padding_standard
+id main_layout
+id startButton
+id statusText
+id tv_status
+layout activity_main
+layout activity_permissions
+layout res_main
+mipmap ic_launcher
+mipmap ic_launcher_round
+string accessibility_service_description
+string app_name
+style Theme.MyApp
+xml accessibility_service_config
+xml notification_listener_config

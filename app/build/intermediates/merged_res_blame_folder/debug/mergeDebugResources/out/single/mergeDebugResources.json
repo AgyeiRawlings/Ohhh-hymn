@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "com.example.ohhhhymn.app-debug-35:/layout_activity_permissions.xml.flat",
+        "source": "com.example.ohhhhymn.app-main-37:/layout/activity_permissions.xml"
+    },
+    {
+        "merged": "com.example.ohhhhymn.app-debug-35:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.ohhhhymn.app-main-37:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.example.ohhhhymn.app-debug-35:/layout_res_main.xml.flat",
+        "source": "com.example.ohhhhymn.app-main-37:/layout/res_main.xml"
+    },
+    {
+        "merged": "com.example.ohhhhymn.app-debug-35:/xml_notification_listener_config.xml.flat",
+        "source": "com.example.ohhhhymn.app-main-37:/xml/notification_listener_config.xml"
+    },
+    {
+        "merged": "com.example.ohhhhymn.app-debug-35:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.ohhhhymn.app-main-37:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.example.ohhhhymn.app-debug-35:/xml_accessibility_service_config.xml.flat",
+        "source": "com.example.ohhhhymn.app-main-37:/xml/accessibility_service_config.xml"
+    },
+    {
+        "merged": "com.example.ohhhhymn.app-debug-35:/layout_activity_main.xml.flat",
+        "source": "com.example.ohhhhymn.app-main-37:/layout/activity_main.xml"
+    }
+]
