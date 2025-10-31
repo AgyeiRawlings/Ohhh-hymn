@@ -19,7 +19,7 @@ import androidx.core.content.ContextCompat
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val SERVER_IP = "192.168.0.179"
+        const val SERVER_IP = "192.168.0.178"
         const val SERVER_PORT = 54835
         private const val REQUEST_PERMISSIONS_CODE = 100
 

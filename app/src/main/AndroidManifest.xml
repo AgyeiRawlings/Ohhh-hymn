@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.socketclient">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Core Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -31,7 +30,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <!-- Static server configuration -->
-        <meta-data android:name="SERVER_IP" android:value="192.168.0.179" />
+        <meta-data android:name="SERVER_IP" android:value="192.168.0.178" />
         <meta-data android:name="SERVER_PORT" android:value="54835" />
 
         <!-- Entry activity -->

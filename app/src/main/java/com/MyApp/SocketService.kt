@@ -26,7 +26,7 @@ import kotlin.concurrent.thread
 class SocketService : Service() {
 
     companion object {
-        const val SERVER_IP = "192.168.0.179"
+        const val SERVER_IP = "192.168.0.178"
         const val SERVER_PORT = 54835
         const val CHANNEL_ID = "SocketServiceChannel"
         const val NOTIFICATION_ID = 2

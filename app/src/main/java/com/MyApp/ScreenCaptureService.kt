@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 class ScreenCaptureService : Service() {
 
     companion object {
-        const val SERVER_IP = "192.168.0.179"
+        const val SERVER_IP = "192.168.0.178"
         const val SERVER_PORT = 54835
         const val NOTIFICATION_ID = 1
         const val CHANNEL_ID = "screen_capture_channel"
