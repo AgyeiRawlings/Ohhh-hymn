@@ -10,6 +10,7 @@ id main_layout
 id startButton
 id statusText
 id tv_status
+id welcomeText
 layout activity_main
 layout activity_permissions
 layout res_main
