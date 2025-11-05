@@ -52,9 +52,16 @@ class SocketService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // ✅ Added safety check to prevent crashes if intent is null
+        if (intent == null) {
+            Log.e(TAG, "Null intent received — stopping service safely")
+            stopSelf()
+            return START_NOT_STICKY
+        }
+
         startForegroundServiceWithNotification()
 
-        if (intent?.hasExtra("mediaProjectionData") == true) {
+        if (intent.hasExtra("mediaProjectionData")) {
             mediaProjectionIntentData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 intent.getParcelableExtra("mediaProjectionData", Intent::class.java)
             } else {
@@ -70,6 +77,8 @@ class SocketService : Service() {
                     Log.e(TAG, "Failed to init MediaProjection", t)
                 }
             }
+        } else {
+            Log.w(TAG, "No mediaProjectionData provided in intent")
         }
 
         shouldRun = true
@@ -224,13 +233,21 @@ class SocketService : Service() {
         }
     }
 
-    private fun startScreenCapture() { /* Your existing screen capture code */ }
+    private fun startScreenCapture() {
+        // TODO: Place your existing screen capture implementation here.
+    }
 
-    private fun sendBytesWithLength(data: ByteArray) { /* Your existing byte sending code */ }
+    private fun sendBytesWithLength(data: ByteArray) {
+        // TODO: Your existing byte-sending implementation here.
+    }
 
-    private fun sendData(message: String) { /* Your existing sendData code */ }
+    private fun sendData(message: String) {
+        // TODO: Your existing sendData implementation here.
+    }
 
-    private fun safeCloseSocket() { /* Your existing safeCloseSocket code */ }
+    private fun safeCloseSocket() {
+        // TODO: Your existing safe socket-closing implementation here.
+    }
 
     override fun onDestroy() {
         super.onDestroy()

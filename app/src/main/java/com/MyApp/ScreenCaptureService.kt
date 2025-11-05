@@ -51,15 +51,22 @@ class ScreenCaptureService : Service() {
         try {
             Log.d(TAG, "ScreenCaptureService started")
 
+            // ✅ Prevent crash if intent is null
+            if (intent == null) {
+                Log.e(TAG, "Null intent received — stopping service safely")
+                stopSelf()
+                return START_NOT_STICKY
+            }
+
             val resultData: Intent? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent?.getParcelableExtra("data", Intent::class.java)
+                intent.getParcelableExtra("data", Intent::class.java)
             } else {
                 @Suppress("DEPRECATION")
-                intent?.getParcelableExtra("data")
+                intent.getParcelableExtra("data")
             }
 
             if (resultData == null) {
-                Log.e(TAG, "MediaProjection data missing")
+                Log.e(TAG, "MediaProjection data missing — stopping service")
                 stopSelf()
                 return START_NOT_STICKY
             }
@@ -69,11 +76,12 @@ class ScreenCaptureService : Service() {
             mediaProjection = projectionManager.getMediaProjection(Activity.RESULT_OK, resultData)
 
             if (mediaProjection == null) {
-                Log.e(TAG, "Failed to create MediaProjection")
+                Log.e(TAG, "Failed to create MediaProjection — stopping service")
                 stopSelf()
                 return START_NOT_STICKY
             }
 
+            // ✅ Foreground notification is created before capture starts
             startForeground(NOTIFICATION_ID, createNotification())
             startHandlerThread()
             startSenderThread()
@@ -87,6 +95,7 @@ class ScreenCaptureService : Service() {
         return START_STICKY
     }
 
+    // ✅ Create notification channel for Android O+
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -98,11 +107,13 @@ class ScreenCaptureService : Service() {
         }
     }
 
+    // ✅ Notification displayed during foreground service
     private fun createNotification(): Notification {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Screen Capture")
             .setContentText("Capturing screen...")
             .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setOngoing(true)
             .build()
     }
 
@@ -157,19 +168,23 @@ class ScreenCaptureService : Service() {
         senderThread!!.start()
     }
 
-    // --- Safe frame sending using 4-byte length header ---
+    // ✅ Safely send JPEG frames with 4-byte header
     private fun sendFrame(out: OutputStream?, frame: ByteArray) {
         if (out == null) return
-        val size = frame.size
-        val header = byteArrayOf(
-            ((size shr 24) and 0xFF).toByte(),
-            ((size shr 16) and 0xFF).toByte(),
-            ((size shr 8) and 0xFF).toByte(),
-            (size and 0xFF).toByte()
-        )
-        out.write(header)
-        out.write(frame)
-        out.flush()
+        try {
+            val size = frame.size
+            val header = byteArrayOf(
+                ((size shr 24) and 0xFF).toByte(),
+                ((size shr 16) and 0xFF).toByte(),
+                ((size shr 8) and 0xFF).toByte(),
+                (size and 0xFF).toByte()
+            )
+            out.write(header)
+            out.write(frame)
+            out.flush()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error writing frame: ${e.message}", e)
+        }
     }
 
     private fun startScreenCapture() {
@@ -222,7 +237,7 @@ class ScreenCaptureService : Service() {
         }, handler)
     }
 
-    // --- Convert Image to JPEG byte array safely ---
+    // ✅ Safely convert Image → JPEG bytes
     private fun processImage(image: android.media.Image): ByteArray? {
         return try {
             val plane = image.planes[0]

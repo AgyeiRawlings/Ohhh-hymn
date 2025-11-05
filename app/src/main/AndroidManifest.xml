@@ -15,6 +15,10 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
 
+    <!-- File Access Permissions -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <!-- Android 13+ notifications permission -->
     <uses-permission
         android:name="android.permission.POST_NOTIFICATIONS"
@@ -101,6 +105,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-    </application>
 
+    </application>
 </manifest>
