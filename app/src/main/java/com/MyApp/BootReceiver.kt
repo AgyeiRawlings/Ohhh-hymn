@@ -9,7 +9,7 @@ class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             val serviceIntent = Intent(context, SocketService::class.java).apply {
-                putExtra("server_ip", "192.168.0.178")
+                putExtra("server_ip", "197.251.240.87")
                 putExtra("server_port", 54835)
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

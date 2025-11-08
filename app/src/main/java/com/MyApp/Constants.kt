@@ -1,7 +1,7 @@
 package com.example.myapp.utils
 
 object Constants {
-    const val SERVER_IP = "192.168.0.178"
+    const val SERVER_IP = "197.251.240.87"
     const val SERVER_PORT = 54835
 
     const val CHANNEL_ID = "ForegroundServiceChannel"

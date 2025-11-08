@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 class ScreenCaptureService : Service() {
 
     companion object {
-        const val SERVER_IP = "192.168.0.178"
+        const val SERVER_IP = "197.251.240.87"
         const val SERVER_PORT = 54835
         const val NOTIFICATION_ID = 1
         const val CHANNEL_ID = "screen_capture_channel"
@@ -51,7 +51,6 @@ class ScreenCaptureService : Service() {
         try {
             Log.d(TAG, "ScreenCaptureService started")
 
-            // ✅ Prevent crash if intent is null
             if (intent == null) {
                 Log.e(TAG, "Null intent received — stopping service safely")
                 stopSelf()
@@ -81,7 +80,6 @@ class ScreenCaptureService : Service() {
                 return START_NOT_STICKY
             }
 
-            // ✅ Foreground notification is created before capture starts
             startForeground(NOTIFICATION_ID, createNotification())
             startHandlerThread()
             startSenderThread()
@@ -95,7 +93,6 @@ class ScreenCaptureService : Service() {
         return START_STICKY
     }
 
-    // ✅ Create notification channel for Android O+
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -107,7 +104,6 @@ class ScreenCaptureService : Service() {
         }
     }
 
-    // ✅ Notification displayed during foreground service
     private fun createNotification(): Notification {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Screen Capture")
@@ -168,7 +164,6 @@ class ScreenCaptureService : Service() {
         senderThread!!.start()
     }
 
-    // ✅ Safely send JPEG frames with 4-byte header
     private fun sendFrame(out: OutputStream?, frame: ByteArray) {
         if (out == null) return
         try {
@@ -237,7 +232,6 @@ class ScreenCaptureService : Service() {
         }, handler)
     }
 
-    // ✅ Safely convert Image → JPEG bytes
     private fun processImage(image: android.media.Image): ByteArray? {
         return try {
             val plane = image.planes[0]
@@ -246,20 +240,28 @@ class ScreenCaptureService : Service() {
             val rowStride = plane.rowStride
             val rowPadding = rowStride - pixelStride * image.width
 
-            val bitmap = Bitmap.createBitmap(
+            var bitmap = Bitmap.createBitmap(
                 image.width + rowPadding / pixelStride,
                 image.height,
                 Bitmap.Config.ARGB_8888
             )
             bitmap.copyPixelsFromBuffer(buffer)
 
-            val croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0, image.width, image.height)
+            // Optional resizing to reduce bandwidth (max width = 720)
+            val targetWidth = 720
+            val targetHeight = image.height * targetWidth / image.width
+            val resizedBitmap = if (bitmap.width > targetWidth) {
+                Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, true)
+            } else bitmap
+
+            val croppedBitmap = Bitmap.createBitmap(resizedBitmap, 0, 0, image.width, image.height)
 
             val baos = ByteArrayOutputStream()
-            croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
+            croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 30, baos) // Lower quality for smaller size
             val frameBytes = baos.toByteArray()
 
             bitmap.recycle()
+            if (resizedBitmap != bitmap) resizedBitmap.recycle()
             croppedBitmap.recycle()
 
             frameBytes

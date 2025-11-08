@@ -34,12 +34,12 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <!-- Static server configuration -->
-        <meta-data android:name="SERVER_IP" android:value="192.168.0.178" />
+        <meta-data android:name="SERVER_IP" android:value="197.251.240.87" />
         <meta-data android:name="SERVER_PORT" android:value="54835" />
 
         <!-- Entry activity -->
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.socketclient.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
