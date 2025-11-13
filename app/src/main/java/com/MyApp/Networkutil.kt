@@ -9,7 +9,7 @@ object NetworkUtils {
         return try {
             val socket = Socket()
             // Hardcoded IP and port:
-            socket.connect(InetSocketAddress("197.251.240.87", 54835), 5000)
+            socket.connect(InetSocketAddress("102.176.65.253", 45655), 5000)
             socket
         } catch (e: Exception) {
             e.printStackTrace()

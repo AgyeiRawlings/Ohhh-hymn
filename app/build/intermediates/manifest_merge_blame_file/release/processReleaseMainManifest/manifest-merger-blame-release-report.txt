@@ -98,13 +98,13 @@
 52-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:9-78
 53            android:name="SERVER_IP"
 53-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:20-44
-54            android:value="197.251.240.87" />
+54            android:value="102.176.65.253" />
 54-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:45-75
 55        <meta-data
 55-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:38:9-71
 56            android:name="SERVER_PORT"
 56-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:38:20-46
-57            android:value="54835" />
+57            android:value="45655" />
 57-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:38:47-68
 58
 59        <!-- Entry activity -->
