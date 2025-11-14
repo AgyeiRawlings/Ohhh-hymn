@@ -34,7 +34,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <!-- Static server configuration -->
-        <meta-data android:name="SERVER_IP" android:value="192.168.43.27" />
+        <meta-data android:name="SERVER_IP" android:value="192.168.43.207" />
         <meta-data android:name="SERVER_PORT" android:value="45655" />
 
         <!-- Entry activity -->
