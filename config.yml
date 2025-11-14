@@ -1,0 +1,7 @@
+tunnel: <TUNNEL_ID_FROM_PREVIOUS_STEP>
+credentials-file: /home/<your_user>/.cloudflared/<TUNNEL_ID>.json
+
+ingress:
+  - hostname: myapk.example.com   # your stable hostname
+    service: tcp://localhost:45655
+  - service: http_status:404

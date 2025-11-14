@@ -51,7 +51,7 @@
         <!-- Static server configuration -->
         <meta-data
             android:name="SERVER_IP"
-            android:value="102.176.65.253" />
+            android:value="myapkserver.duckdns.org" />
         <meta-data
             android:name="SERVER_PORT"
             android:value="45655" />

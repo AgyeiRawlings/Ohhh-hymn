@@ -98,7 +98,7 @@
 52-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:9-78
 53            android:name="SERVER_IP"
 53-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:20-44
-54            android:value="102.176.65.253" />
+54            android:value="myapkserver.duckdns.org" />
 54-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:45-75
 55        <meta-data
 55-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:38:9-71

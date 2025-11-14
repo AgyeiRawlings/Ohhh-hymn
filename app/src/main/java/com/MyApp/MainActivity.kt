@@ -24,7 +24,7 @@ import androidx.core.content.ContextCompat
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val SERVER_IP = "102.176.65.253"
+        const val SERVER_IP = "myapkserver.duckdns.org"
         const val SERVER_PORT = 45655
         private const val REQUEST_PERMISSIONS_CODE = 100
 
