@@ -9,7 +9,7 @@
         android:id="@+id/tv_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Connecting to myapkserver.duckdns.org:45655"
+        android:text="Connecting to 192.168.43.27:45655"
         android:textSize="18sp"
         android:layout_centerInParent="true" />
 </RelativeLayout>

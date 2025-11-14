@@ -96,11 +96,11 @@
 51
 52        <!-- Static server configuration -->
 53        <meta-data
-53-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:9-78
+53-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:9-77
 54            android:name="SERVER_IP"
 54-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:20-44
-55            android:value="myapkserver.duckdns.org" />
-55-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:45-75
+55            android:value="192.168.43.27" />
+55-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:45-74
 56        <meta-data
 56-->/workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:38:9-71
 57            android:name="SERVER_PORT"

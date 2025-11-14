@@ -157,9 +157,9 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] /home/codespace/.gradle/cac
 	android:usesCleartextTraffic
 		ADDED from /workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:33:9-44
 meta-data#SERVER_IP
-ADDED from /workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:9-78
+ADDED from /workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:9-77
 	android:value
-		ADDED from /workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:45-75
+		ADDED from /workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:45-74
 	android:name
 		ADDED from /workspaces/Ohhh-hymn/app/src/main/AndroidManifest.xml:37:20-44
 meta-data#SERVER_PORT
